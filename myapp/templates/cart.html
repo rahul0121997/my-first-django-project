@@ -1,0 +1,141 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Shopping Cart</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{% url 'cart' %}">Cart</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Cart Area =================-->
+    <section class="cart_area">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Remove</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in carts %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'remove-from-cart' pk=i.product.pk %}">Remove</a>
+                                </td>
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="{{i.product.product_picture.url}}" alt="" style="width: 100px;height:100px;">
+                                        </div>
+                                        <div class="media-body">
+                                            <p>{{i.product.product_name}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5>{{i.product.product_price}}</h5>
+                                </td>
+                                <td>
+                                    <div class="product_count">
+                                        <form method="post" action="{% url 'change-qty' pk=i.pk %}">
+                                        {% csrf_token %}
+                                        <input type="number" name="product_qty" id="sst" maxlength="12" value="{{i.product_qty}}" title="Quantity:"
+                                            class="input-text qty" onchange="this.form.submit();">
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5>{{i.total_price}}</h5>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                           
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <h5>Subtotal</h5>
+                                </td>
+                                <td>
+                                    <h5>{{net_price}}</h5>
+                                </td>
+                            </tr>
+                            
+                            
+                        </tbody>
+                    </table>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-lg btn-success" id="checkout-button">Checkout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Cart Area =================-->
+    <script type="text/javascript">
+
+		var stripe = Stripe('pk_test_51MshH6SJuXwPfjjrrgxJ5tubbOgYAhRrqNcd4RDUSq1peWpIMZrjhIiTncSUWO9u6byeDf4KxdZPkFD4hU55mVOg00aRL5RT8x');
+		var checkoutButton = document.getElementById('checkout-button');
+		
+		checkoutButton.addEventListener('click', function() { 
+		 fetch('/create-checkout-session/', {
+		 method: 'POST',
+			headers:{
+				'Accept': 'application/json',
+				'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+		
+			},
+			body: JSON.stringify({'post_data':'{{net_price}}'})
+		 })
+		 .then(function(response) {
+		 return response.json();
+		 })
+		 .then(function(session) {
+		 return stripe.redirectToCheckout({ sessionId: session.id });
+		 })
+		 .then(function(result) {
+		 // If `redirectToCheckout` fails due to a browser or network
+		 // error, you should display the localized error message to your
+		 // customer using `error.message`.
+		 if (result.error) {
+		 alert(result.error.message);
+		 }
+		 })
+		 .catch(function(error) {
+		 console.error('Error:', error);
+		 });
+		 });
+		 </script>
+</body>
+</html>
+{% endblock %}

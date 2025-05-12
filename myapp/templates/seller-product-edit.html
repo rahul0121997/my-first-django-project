@@ -1,0 +1,141 @@
+{% extends 'seller-header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+</head>
+
+<body>
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Edit Product</h1>
+					<nav class="d-flex align-items-center">
+						<a href="{% url 'seller-index' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="{% url 'seller-product-edit' pk=product.pk %}">Edit Product</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area section_gap">
+		<div class="container">
+			<div class="row">
+				
+				<div class="col-lg-12">
+					<div class="login_form_inner">
+						<h3>Add Product</h3>
+                        {%  if msg %}
+                            <b style="color: blue;">{{msg}}</b>
+                        {% endif %}
+						<form class="row login_form" action="{% url 'seller-product-edit' pk=product.pk  %}" method="post" id="contactForm" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div class="col-md-12 form-group">
+                                {% if product.product_brand == "Reebok" %}
+                                <select class="form-control" name="product_brand">
+									<option>---Select Product Brand---</option>
+									<option value="Reebok" selected>Reebok</option>
+									<option value="Adidas">Adidas</option>
+                                    <option value="Nike">Nike</option>
+                                    <option value="Puma">Puma</option>
+								</select>
+                                {% elif product.product_brand == "Adidas" %}
+                                <select class="form-control" name="product_brand">
+									<option>---Select Product Brand---</option>
+									<option value="Reebok">Reebok</option>
+									<option value="Adidas" selected>Adidas</option>
+                                    <option value="Nike">Nike</option>
+                                    <option value="Puma">Puma</option>
+								</select>
+                                {% elif product.product_brand == "Nike" %}
+                                <select class="form-control" name="product_brand">
+									<option>---Select Product Brand---</option>
+									<option value="Reebok">Reebok</option>
+									<option value="Adidas">Adidas</option>
+                                    <option value="Nike" selected>Nike</option>
+                                    <option value="Puma">Puma</option>
+								</select>
+                                {% elif product.product_brand == "Puma" %}
+                                <select class="form-control" name="product_brand">
+									<option>---Select Product Brand---</option>
+									<option value="Reebok">Reebok</option>
+									<option value="Adidas">Adidas</option>
+                                    <option value="Nike">Nike</option>
+                                    <option value="Puma" selected>Puma</option>
+								</select>
+                                {% endif %}
+								
+							</div>
+                            <div class="col-md-12 form-group">
+                                {% if product.product_category == "Formal" %}
+                                <select class="form-control" name="product_category">
+									<option>---Select Product Category---</option>
+									<option value="Formal" selected>Formal</option>
+									<option value="Sports">Sports</option>
+                                    <option value="Sneaker">Sneaker</option>
+                                    <option value="Party">Party</option>
+								</select>
+                                {% elif product.product_category == "Sports" %}
+                                <select class="form-control" name="product_category">
+									<option>---Select Product Category---</option>
+									<option value="Formal">Formal</option>
+									<option value="Sports" selected>Sports</option>
+                                    <option value="Sneaker">Sneaker</option>
+                                    <option value="Party">Party</option>
+								</select>
+                                {% elif product.product_category == "Sneaker" %}
+                                <select class="form-control" name="product_category">
+									<option>---Select Product Category---</option>
+									<option value="Formal">Formal</option>
+									<option value="Sports">Sports</option>
+                                    <option value="Sneaker" selected>Sneaker</option>
+                                    <option value="Party">Party</option>
+								</select>
+                                {% elif product.product_category == "Party" %}
+                                <select class="form-control" name="product_category">
+									<option>---Select Product Category---</option>
+									<option value="Formal">Formal</option>
+									<option value="Sports">Sports</option>
+                                    <option value="Sneaker">Sneaker</option>
+                                    <option value="Party" selected>Party</option>
+								</select>
+                                {% endif %}
+								
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="product_name" value="{{product.product_name}}">
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="product_price" value="{{product.product_price}}">
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="product_desc" value="{{product.product_desc}}">
+							</div>
+                            <div class="col-md-12 form-group">
+								<img src="{{product.product_picture.url}}" style="width: 100px;height: 100px;">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="file" class="form-control" id="name" name="product_picture">
+							</div>
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="primary-btn">Update Product</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+</body>
+
+</html>
+{% endblock %}

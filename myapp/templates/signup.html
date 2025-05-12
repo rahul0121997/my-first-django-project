@@ -1,0 +1,91 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+</head>
+
+<body>
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Register</h1>
+					<nav class="d-flex align-items-center">
+						<a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="{% url 'signup' %}">Register</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area section_gap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<img class="img-fluid" src="{% static 'img/login.jpg' %}" alt="">
+						<div class="hover">
+							<h4>Already Registered?</h4>
+							
+							<a class="primary-btn" href="{% url 'login' %}">Login To Your Account</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner">
+						<h3>Sign Up to enter</h3>
+                        {%  if msg %}
+                            <b style="color: blue;">{{msg}}</b>
+                        {% endif %}
+						<form class="row login_form" action="{% url 'signup' %}" method="post" id="contactForm" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div class="col-md-12 form-group">
+								<select class="form-control" name="usertype">
+									<option>---Select User Type---</option>
+									<option value="buyer">Buyer</option>
+									<option value="seller">Seller</option>
+								</select>
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="fname" placeholder="First name">
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="lname" placeholder="Last name">
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="email" placeholder="Email">
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="mobile" placeholder="Mobile">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="name" name="password" placeholder="Password">
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="name" name="cpassword" placeholder="Confirm Password">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="file" class="form-control" id="name" name="profile_picture">
+							</div>
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="primary-btn">Sign Up</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+</body>
+
+</html>
+{% endblock %}
